@@ -45,7 +45,7 @@ public class ProducerConsumer {
 
     public static void main(String[] args) throws InterruptedException {
 
-        ProducerConsumer blockingWork = new ProducerConsumer(new File("C:/Users/user/Desktop/input.csv"), new File("C:/Users/user/Desktop/output.json"));
+        ProducerConsumer blockingWork = new ProducerConsumer(new File(args[0]), new File(args[1]));
         Thread consumer = new Thread() {
             @Override
             public void run() {
