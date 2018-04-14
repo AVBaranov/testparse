@@ -1,4 +1,4 @@
-package parse;
+package abaranov.csvToJson;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class ProducerConsumer {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    /*public static void main(String[] args) throws InterruptedException {
 
         ProducerConsumer blockingWork = new ProducerConsumer(new File(args[0]), new File(args[1]));
         Thread consumer = new Thread() {
@@ -70,5 +70,5 @@ public class ProducerConsumer {
         producer.join();
 
 
-    }
+    }*/
 }
