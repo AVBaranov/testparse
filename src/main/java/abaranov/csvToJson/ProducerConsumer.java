@@ -42,33 +42,4 @@ public class ProducerConsumer {
             }
         }
     }
-
-    /*public static void main(String[] args) throws InterruptedException {
-
-        ProducerConsumer blockingWork = new ProducerConsumer(new File(args[0]), new File(args[1]));
-        Thread consumer = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    blockingWork.getElement();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-
-        Thread producer = new Thread() {
-            @Override
-            public void run() {
-                blockingWork.addElement();
-            }
-        };
-        producer.start();
-        consumer.start();
-        consumer.join();
-        producer.join();
-
-
-    }*/
 }
