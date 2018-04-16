@@ -10,4 +10,5 @@ public class Application {
         RunParse runParse = context.getBean(RunParse.class);
         runParse.parse(args[0], args[1]);
     }
+
 }

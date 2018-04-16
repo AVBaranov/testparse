@@ -1,35 +1,52 @@
 package abaranov.csvToJson;
 
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import abaranov.Item;
+import au.com.bytecode.opencsv.CSVReader;
+import org.codehaus.jackson.map.ObjectMapper;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SimpleQueue {
+    private List<String> jsons = new ArrayList<>();
+    private ObjectMapper mapper = new ObjectMapper();
 
-    private List<Map<?, ?>> list = new ArrayList();
-
-    public List<Map<?, ?>> add(File input) throws IOException {
-        CsvSchema bootstrap = CsvSchema.emptySchema().withHeader();
-        CsvMapper csvMapper = new CsvMapper();
-        MappingIterator<Map<?, ?>> mappingIterator = csvMapper.reader(Map.class).with(bootstrap).readValues(input);
-        this.list = mappingIterator.readAll();
-        return this.list;
+    public List<String> add(File input) {
+        List<Item> items = new ArrayList<>();
+        try {
+            CSVReader reader = new CSVReader(new FileReader(input));
+            String [] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                items.add(new Item(Integer.parseInt(nextLine[0]), Integer.parseInt(nextLine[1]), nextLine[2], nextLine[3]));
+            }
+            for (Item item : items) {
+                this.jsons.add(this.mapper.writeValueAsString(item));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return this.jsons;
     }
 
-    public void get(File output) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(output, this.list);
-        this.list.remove(0);
+    public void get(File output)  {
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new FileOutputStream(output));
+            for (String json : jsons) {
+                pw.print(json);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            pw.close();
+        }
+        this.jsons.remove(0);
     }
 
     public boolean isEmpty() {
-        return this.list.isEmpty();
+        return this.jsons.isEmpty();
     }
 }

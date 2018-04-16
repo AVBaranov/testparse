@@ -1,10 +1,10 @@
 package abaranov.csvToJson;
 
 import java.io.File;
-import java.io.IOException;
 
 public class ProducerConsumer {
-    private SimpleQueue queue = new SimpleQueue();
+//    private SimpleQueue queue = new SimpleQueue();
+    private SimpleQueue list = new SimpleQueue();
     private File input;
     private File output;
 
@@ -17,27 +17,18 @@ public class ProducerConsumer {
 
     public void getElement() throws InterruptedException{
         synchronized (this.lock) {
-            if (this.queue.isEmpty()) {
+            if (this.list.isEmpty()) {
                 System.out.println("no records available");
                 lock.wait();
             }
-            try {
-                queue.get(output);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                list.get(output);
         }
     }
 
     public void addElement() {
         synchronized (this.lock) {
-            try {
-                System.out.println(queue.add(input));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (!this.queue.isEmpty()) {
+                System.out.println(list.add(input));
+            if (!this.list.isEmpty()) {
                 this.lock.notify();
             }
         }
